@@ -1,5 +1,4 @@
 'use client';
-import useSWR from 'swr';
 import {
 	GIPHY_API_BASE_URL,
 	GIPHY_API_LIMIT,
@@ -7,15 +6,13 @@ import {
 } from '@/constants';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { fetcher } from '@/helpers';
 
 export const SearchBar = () => {
 	const [search, setSearch] = useState('');
 	const [suggestions, setSuggestions] = useState<string[]>([]);
-	const { data: suggestionsData } = useSWR(
-		`${GIPHY_API_BASE_URL}${GIPHY_API_SEARCH_SUGGESTIONS_ENDPOINT}?api_key=${process.env.NEXT_PUBLIC_GIPHY_API_KEY}&q=${search}&limit=${GIPHY_API_LIMIT}`,
-		fetcher,
-	);
+
+	const fetcher = (url: string) => fetch(url).then(res => res.json());
+
 	const router = useRouter();
 
 	const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,12 +26,17 @@ export const SearchBar = () => {
 	) => {
 		e.preventDefault();
 		setSearch(e.target.value);
-		if (suggestionsData) {
+
+		const url = `${GIPHY_API_BASE_URL}${GIPHY_API_SEARCH_SUGGESTIONS_ENDPOINT}?api_key=${process.env.NEXT_PUBLIC_GIPHY_API_KEY}&q=${e.target.value}&limit=${GIPHY_API_LIMIT}`;
+		try {
+			const data = await fetcher(url);
 			setSuggestions(
-				suggestionsData.data.map(
+				data.data.map(
 					(suggestion: { name: string }) => suggestion.name,
 				),
 			);
+		} catch (error) {
+			console.error(error);
 		}
 	};
 

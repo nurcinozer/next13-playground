@@ -4,14 +4,13 @@ import {
 	GIPHY_API_LIMIT,
 	GIPHY_API_SEARCH_SUGGESTIONS_ENDPOINT,
 } from '@/constants';
+import { fetcher } from '@/helpers';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export const SearchBar = () => {
 	const [search, setSearch] = useState('');
 	const [suggestions, setSuggestions] = useState<string[]>([]);
-
-	const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 	const router = useRouter();
 

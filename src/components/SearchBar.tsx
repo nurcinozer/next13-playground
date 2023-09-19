@@ -26,14 +26,16 @@ export const SearchBar = () => {
 		e.preventDefault();
 		setSearch(e.target.value);
 
-		const url = `${GIPHY_API_BASE_URL}${GIPHY_API_SEARCH_SUGGESTIONS_ENDPOINT}?api_key=${process.env.NEXT_PUBLIC_GIPHY_API_KEY}&q=${e.target.value}&limit=${GIPHY_API_LIMIT}`;
 		try {
-			const data = await fetcher(url);
-			setSuggestions(
-				data.data.map(
-					(suggestion: { name: string }) => suggestion.name,
-				),
+			const response = await fetch(
+				`/api/suggestions?query=${e.target.value}`,
 			);
+			if (response.ok) {
+				const data = await response.json();
+				setSuggestions(data.suggestions);
+			} else {
+				console.error('Failed to fetch suggestions');
+			}
 		} catch (error) {
 			console.error(error);
 		}

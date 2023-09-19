@@ -3,16 +3,15 @@ import {
 	GIPHY_API_SEARCH_ENDPOINT,
 	GIPHY_API_LIMIT,
 } from '@/constants';
+import { fetcher } from './fetcher';
 
 export const searchGifs = async (searchTerm: string) => {
-	const response = await fetch(
-		`${GIPHY_API_BASE_URL}${GIPHY_API_SEARCH_ENDPOINT}?api_key=${process.env.NEXT_PUBLIC_GIPHY_API_KEY}&q=${searchTerm}&limit=${GIPHY_API_LIMIT}`,
-	);
+	const url = `${GIPHY_API_BASE_URL}${GIPHY_API_SEARCH_ENDPOINT}?api_key=${process.env.NEXT_PUBLIC_GIPHY_API_KEY}&q=${searchTerm}&limit=${GIPHY_API_LIMIT}`;
 
-	if (!response.ok) {
+	try {
+		const { data } = await fetcher(url);
+		return data;
+	} catch (error) {
 		throw new Error('Failed to fetch gifs');
 	}
-
-	const { data } = await response.json();
-	return data;
 };

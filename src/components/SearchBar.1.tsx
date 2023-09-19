@@ -7,15 +7,16 @@ import {
 } from '@/constants';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { fetcher } from '@/helpers';
 
 export const SearchBar = () => {
 	const [search, setSearch] = useState('');
 	const [suggestions, setSuggestions] = useState<string[]>([]);
-	const { data: suggestionsData } = useSWR(
+
+	const { data } = useSWR(
 		`${GIPHY_API_BASE_URL}${GIPHY_API_SEARCH_SUGGESTIONS_ENDPOINT}?api_key=${process.env.NEXT_PUBLIC_GIPHY_API_KEY}&q=${search}&limit=${GIPHY_API_LIMIT}`,
 		fetcher,
 	);
+
 	const router = useRouter();
 
 	const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,12 +30,8 @@ export const SearchBar = () => {
 	) => {
 		e.preventDefault();
 		setSearch(e.target.value);
-		if (suggestionsData) {
-			setSuggestions(
-				suggestionsData.data.map(
-					(suggestion: { name: string }) => suggestion.name,
-				),
-			);
+		if (data) {
+			setSuggestions(data.data.map((suggestion: any) => suggestion.name));
 		}
 	};
 

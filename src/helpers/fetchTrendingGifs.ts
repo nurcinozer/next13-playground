@@ -1,7 +1,6 @@
 import {
 	GIPHY_API_BASE_URL,
 	GIPHY_API_LIMIT,
-	GIPHY_API_OFFSET,
 	GIPHY_API_TRENDING_ENDPOINT,
 } from '@/constants';
 import { fetcher } from './fetcher';

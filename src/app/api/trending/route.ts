@@ -1,8 +1,4 @@
-import {
-	GIPHY_API_BASE_URL,
-	GIPHY_API_SEARCH_SUGGESTIONS_ENDPOINT,
-	GIPHY_API_LIMIT,
-} from '@/constants';
+import { GIPHY_API_LIMIT } from '@/constants';
 import { fetchTrendingGifs, fetcher } from '@/helpers';
 import { NextResponse } from 'next/server';
 

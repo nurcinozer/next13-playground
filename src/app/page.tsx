@@ -1,4 +1,5 @@
 import { Card, SearchBar } from '@/components';
+import { LoadMore } from '@/components/LoadMore';
 import { fetchTrendingGifs } from '@/helpers';
 import { Gif } from '@/types';
 import Link from 'next/link';
@@ -19,6 +20,7 @@ export default async function Home() {
 					/>
 				</Link>
 			))}
+			<LoadMore />
 		</>
 	);
 }

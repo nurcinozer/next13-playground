@@ -1,10 +1,4 @@
 'use client';
-import {
-	GIPHY_API_BASE_URL,
-	GIPHY_API_LIMIT,
-	GIPHY_API_SEARCH_SUGGESTIONS_ENDPOINT,
-} from '@/constants';
-import { fetcher } from '@/helpers';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -28,7 +22,7 @@ export const SearchBar = () => {
 
 		try {
 			const response = await fetch(
-				`/api/suggestions?query=${e.target.value}`,
+				`/api/autocomplete?query=${e.target.value}`,
 			);
 			if (response.ok) {
 				const data = await response.json();
